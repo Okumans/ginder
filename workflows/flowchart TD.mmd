@@ -1,0 +1,12 @@
+flowchart TD
+    L[Dashboard] --> M[Select Channel]
+    M --> N[Compose Message]
+    N --> O{Attachment?}
+    O -- Yes --> P[Upload to S3]
+    O -- No --> Q
+    P --> Q[Send Message]
+    Q --> R[Message Persisted]
+    R --> S[WebSocket Broadcast]
+    S --> T{Recipient Online?}
+    T -- Yes --> U[Show Message + Reset Unread]
+    T -- No --> V[Increment Unread + Push Notification]

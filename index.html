@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/favicon-192.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#8c2333" />
+    <meta name="description" content="Ginder — swipe to match on food with your friends. No more 'whatever, anything is fine'. Tinder-style swiping plus bracket tournaments to settle the group's next meal." />
+    <title>Ginder — Swipe Right on Dinner</title>
+    <!-- Dynamic ES module loader for Gleo WebGL Map Library from CDN -->
+    <script type="module">
+      import MercatorMap from "https://unpkg.com/gleo@0.3.0/src/MercatorMap.mjs";
+      import MercatorTiles from "https://unpkg.com/gleo@0.3.0/src/loaders/MercatorTiles.mjs";
+      import Sprite from "https://unpkg.com/gleo@0.3.0/src/symbols/Sprite.mjs";
+      import Balloon from "https://unpkg.com/gleo@0.3.0/src/pin/Balloon.mjs";
+      import LatLng from "https://unpkg.com/gleo@0.3.0/src/geometry/LatLng.mjs";
+      import CircleFill from "https://unpkg.com/gleo@0.3.0/src/symbols/CircleFill.mjs";
+
+      window.Gleo = {
+        MercatorMap,
+        MercatorTiles,
+        Sprite,
+        Balloon,
+        LatLng,
+        CircleFill
+      };
+      window.dispatchEvent(new Event('gleo-loaded'));
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
