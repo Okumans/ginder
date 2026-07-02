@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Copy, Users, Play, Bot, AlertCircle, MapPin, Eye, EyeOff, Timer, Globe, Sparkles, Loader2 } from 'lucide-react';
+import { Copy, Users, Play, Bot, AlertCircle, MapPin, Eye, EyeOff, Timer, Globe, Sparkles, Loader2, QrCode } from 'lucide-react';
+import QRCode from 'qrcode';
 import { restaurants } from '../data/restaurants';
 
 export const LobbyView = ({
@@ -49,7 +50,24 @@ export const LobbyView = ({
   };
 
   const availableCount = getAvailableCount();
-  
+
+  // Room invite QR code — lets friends in the same room scan to join
+  // instead of typing the 4-character code.
+  const [showQr, setShowQr] = useState(false);
+  const [qrDataUrl, setQrDataUrl] = useState(null);
+
+  useEffect(() => {
+    if (!showQr || !roomCode) return;
+    const shareUrl = `${window.location.origin}?room=${roomCode}`;
+    QRCode.toDataURL(shareUrl, {
+      width: 180,
+      margin: 1,
+      color: { dark: '#4a1620', light: '#fffdfb' }
+    })
+      .then(setQrDataUrl)
+      .catch((err) => console.error('QR code generation failed:', err));
+  }, [showQr, roomCode]);
+
   // Gleo Map States
   const [gleoLoaded, setGleoLoaded] = useState(!!window.Gleo);
   const mapRef = useRef(null);
@@ -344,7 +362,34 @@ export const LobbyView = ({
               <button className="btn btn-outline" onClick={copyRoomLink} aria-label="Copy room invite link" style={{ width: 'auto', padding: '0.75rem 1rem', borderRadius: '12px' }}>
                 <Copy size={18} />
               </button>
+              <button
+                className={`btn ${showQr ? 'btn-primary' : 'btn-outline'}`}
+                onClick={() => setShowQr((prev) => !prev)}
+                aria-label={showQr ? 'Hide QR code' : 'Show QR code to scan and join'}
+                aria-pressed={showQr}
+                style={{ width: 'auto', padding: '0.75rem 1rem', borderRadius: '12px' }}
+              >
+                <QrCode size={18} />
+              </button>
             </div>
+            {showQr && (
+              <div style={{ marginTop: '0.75rem' }}>
+                {qrDataUrl ? (
+                  <img
+                    src={qrDataUrl}
+                    alt={`QR code to join room ${roomCode}`}
+                    width={140}
+                    height={140}
+                    style={{ borderRadius: '12px', border: '3px solid var(--ink)' }}
+                  />
+                ) : (
+                  <div className="spinner" style={{ margin: '0.5rem 0' }} />
+                )}
+                <p style={{ fontSize: '0.72rem', color: 'var(--ink)', opacity: 0.55, marginTop: '0.4rem', maxWidth: '160px' }}>
+                  Scan to jump straight into this room
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Room Publicity Toggle (Host only) */}
