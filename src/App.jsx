@@ -282,6 +282,9 @@ function App() {
                 );
               })}
             </div>
+            <span className="sr-only" role="status" aria-live="polite">
+              {participants.filter((p) => swipeVotes[p.id] !== undefined).length} of {participants.length} friends have finished swiping.
+            </span>
           </div>
         );
 
@@ -315,7 +318,9 @@ function App() {
 
   return (
     <>
-      {renderContent()}
+      <div className="stage-transition" key={status}>
+        {renderContent()}
+      </div>
 
       {/* Side Docked Companion Simulator */}
       <MatchSimulator

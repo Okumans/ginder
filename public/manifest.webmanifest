@@ -1,0 +1,25 @@
+{
+  "name": "Ginder — Swipe Right on Dinner",
+  "short_name": "Ginder",
+  "description": "Swipe together with friends to match on a meal. No more \"whatever, anything's fine\".",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffe4e3",
+  "theme_color": "#8c2333",
+  "icons": [
+    {
+      "src": "/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

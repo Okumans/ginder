@@ -341,7 +341,7 @@ export const LobbyView = ({
             </span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <div className="room-code-badge" style={{ marginBottom: 0 }}>{roomCode}</div>
-              <button className="btn btn-outline" onClick={copyRoomLink} style={{ width: 'auto', padding: '0.75rem 1rem', borderRadius: '12px' }}>
+              <button className="btn btn-outline" onClick={copyRoomLink} aria-label="Copy room invite link" style={{ width: 'auto', padding: '0.75rem 1rem', borderRadius: '12px' }}>
                 <Copy size={18} />
               </button>
             </div>
@@ -531,14 +531,17 @@ export const LobbyView = ({
               {categoriesList.map((category) => {
                 const isActive = settings.categories.includes(category);
                 return (
-                  <div
+                  <button
                     key={category}
+                    type="button"
+                    aria-pressed={isActive}
+                    disabled={!isHost}
                     className={`category-chip ${isActive ? 'active' : ''}`}
                     onClick={() => handleCategoryToggle(category)}
-                    style={{ opacity: !isHost && !isActive ? 0.4 : 1 }}
+                    style={{ opacity: !isHost && !isActive ? 0.4 : 1, cursor: isHost ? 'pointer' : 'default' }}
                   >
                     <span>{category}</span>
-                  </div>
+                  </button>
                 );
               })}
             </div>

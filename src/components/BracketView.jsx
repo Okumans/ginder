@@ -156,10 +156,22 @@ export const BracketView = ({
     const isSelected = !isTieBreakActiveForThisMatch && userVote === restaurant.id;
     const isDimmed = !isTieBreakActiveForThisMatch && userVote && userVote !== restaurant.id;
 
+    const canVote = !userVote && !isTieBreakActiveForThisMatch;
+
     return (
       <div
         className={`bracket-option-card ${isSelected ? 'selected' : ''} ${isFlashHighlighted ? 'selected flash-active' : ''}`}
         onClick={() => handleVote(restaurant.id)}
+        role="button"
+        tabIndex={canVote ? 0 : -1}
+        aria-pressed={isSelected}
+        aria-label={`Vote for ${restaurant.name}`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleVote(restaurant.id);
+          }
+        }}
         style={{ opacity: isDimmed ? 0.55 : 1, cursor: isTieBreakActiveForThisMatch ? 'default' : 'pointer' }}
       >
         <img src={restaurant.image} onError={handleImageError} alt={restaurant.name} className="bracket-option-img" />
@@ -229,6 +241,9 @@ export const BracketView = ({
             style={{ width: `${(totalVotesCount / totalParticipants) * 100}%` }}
           />
         </div>
+        <span className="sr-only" role="status" aria-live="polite">
+          {totalVotesCount} of {totalParticipants} friends have voted on this matchup.
+        </span>
       </div>
 
       {/* Live Bracket Diagram Visual (Quarter -> Semi -> Final) */}

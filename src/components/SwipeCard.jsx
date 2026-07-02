@@ -41,7 +41,7 @@ export const SwipeCard = ({
   }, [votes]);
 
   const recordVote = (like) => {
-    if (!activeRestaurant) return;
+    if (!activeRestaurant || swipeDirection) return; // ignore double-fires mid-animation
 
     setSwipeDirection(like ? 'yes' : 'no');
     setSwipeOffset({ x: like ? 600 : -600, y: 0 });
@@ -71,6 +71,17 @@ export const SwipeCard = ({
     });
     onSubmitVotes(completeVotes);
   };
+
+  // Keyboard alternative to the drag gesture: Left = pass, Right = like
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft') recordVote(false);
+      else if (e.key === 'ArrowRight') recordVote(true);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeRestaurant, swipeDirection, votes]);
 
   // Touch/Mouse swipe handlers
   const handlePointerDown = (e) => {
@@ -250,6 +261,7 @@ export const SwipeCard = ({
           <Heart size={28} />
         </button>
       </div>
+      <p className="swipe-keyboard-hint">Tip: use ← / → arrow keys to vote too</p>
     </div>
   );
 };

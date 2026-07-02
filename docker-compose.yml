@@ -1,0 +1,27 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ginder-web
+    restart: unless-stopped
+    networks:
+      - ginder-network
+    ports:
+      - "127.0.0.1:8090:80"
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: ginder-tunnel
+    restart: unless-stopped
+    command: tunnel --config /etc/cloudflared/config.yml run
+    volumes:
+      - ./cloudflared:/etc/cloudflared:ro
+    depends_on:
+      - web
+    networks:
+      - ginder-network
+
+networks:
+  ginder-network:
+    driver: bridge

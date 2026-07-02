@@ -82,20 +82,33 @@ export const MatchSimulator = ({
         <p style={{ color: 'var(--ink)', opacity: 0.6, fontSize: '0.7rem', marginBottom: '0.5rem' }}>
           Open this room link in a new private window or split-screen tab:
         </p>
-        <div style={{
-          background: 'var(--ink)',
-          padding: '0.4rem',
-          borderRadius: '6px',
-          wordBreak: 'break-all',
-          fontFamily: 'monospace',
-          fontSize: '0.65rem',
-          color: '#ffd166',
-          userSelect: 'all',
-          cursor: 'pointer'
-        }} onClick={() => {
-          navigator.clipboard.writeText(shareUrl);
-          alert('Copied URL!');
-        }}>
+        <div
+          role="button"
+          tabIndex={0}
+          aria-label="Copy room link to clipboard"
+          style={{
+            background: 'var(--ink)',
+            padding: '0.4rem',
+            borderRadius: '6px',
+            wordBreak: 'break-all',
+            fontFamily: 'monospace',
+            fontSize: '0.65rem',
+            color: '#ffd166',
+            userSelect: 'all',
+            cursor: 'pointer'
+          }}
+          onClick={() => {
+            navigator.clipboard.writeText(shareUrl);
+            alert('Copied URL!');
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              navigator.clipboard.writeText(shareUrl);
+              alert('Copied URL!');
+            }
+          }}
+        >
           {shareUrl}
         </div>
         <p style={{ color: 'var(--ink)', opacity: 0.55, fontSize: '0.65rem', marginTop: '0.4rem' }}>

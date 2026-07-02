@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Award, Compass, RefreshCw } from 'lucide-react';
+import { Award, Compass, RefreshCw, Share2, Check } from 'lucide-react';
 
 export const WinnerView = ({
   winner,
@@ -8,6 +8,7 @@ export const WinnerView = ({
   leaveRoom
 }) => {
   const [confetti, setConfetti] = useState([]);
+  const [justCopied, setJustCopied] = useState(false);
 
   useEffect(() => {
     // Generate 50 confetti particles
@@ -32,6 +33,27 @@ export const WinnerView = ({
     window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
   };
 
+  const handleShare = async () => {
+    const cleanName = winner.name.split(' (')[0];
+    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanName)}`;
+    const shareText = `We're eating at ${cleanName}! 🎉 The group matched on Ginder.`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'Ginder Pick', text: shareText, url: mapsUrl });
+      } catch (err) {
+        // User cancelled the native share sheet — nothing to do.
+      }
+      return;
+    }
+
+    if (navigator.clipboard) {
+      await navigator.clipboard.writeText(`${shareText} ${mapsUrl}`);
+      setJustCopied(true);
+      setTimeout(() => setJustCopied(false), 2000);
+    }
+  };
+
   const handleImageError = (e) => {
     e.target.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23ffe4e3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='30'>🍽️</text></svg>";
   };
@@ -45,10 +67,11 @@ export const WinnerView = ({
 
   return (
     <div className="glass-panel" style={{ maxWidth: '560px', position: 'relative', overflow: 'visible' }}>
-      {/* Confetti particles */}
+      {/* Confetti particles (decorative only) */}
       {confetti.map((p) => (
         <div
           key={p.id}
+          aria-hidden="true"
           className="confetti"
           style={{
             left: p.left,
@@ -136,10 +159,15 @@ export const WinnerView = ({
 
       {/* Actions */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-        <button className="btn btn-secondary" onClick={handleOpenMaps}>
-          <Compass size={18} />
-          Open in Google Maps
-        </button>
+        <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <button className="btn btn-secondary" onClick={handleOpenMaps} style={{ flex: 2 }}>
+            <Compass size={18} />
+            Open in Google Maps
+          </button>
+          <button className="btn btn-outline" onClick={handleShare} aria-label="Share this pick with your group" style={{ flex: 1 }}>
+            {justCopied ? <Check size={18} style={{ color: 'var(--yes-color)' }} /> : <Share2 size={18} />}
+          </button>
+        </div>
 
         {isHost ? (
           <button className="btn btn-outline" onClick={resetSession}>
