@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Copy, Users, Play, Bot, AlertCircle, MapPin, Eye, EyeOff, Timer, Globe, Sparkles, Loader2, QrCode } from 'lucide-react';
-import QRCode from 'qrcode';
 import { restaurants } from '../data/restaurants';
 
 export const LobbyView = ({
@@ -59,13 +58,21 @@ export const LobbyView = ({
   useEffect(() => {
     if (!showQr || !roomCode) return;
     const shareUrl = `${window.location.origin}?room=${roomCode}`;
-    QRCode.toDataURL(shareUrl, {
-      width: 180,
-      margin: 1,
-      color: { dark: '#4a1620', light: '#fffdfb' }
-    })
-      .then(setQrDataUrl)
+    let cancelled = false;
+
+    // Loaded on demand: most sessions never open the QR view, so this
+    // keeps the ~10KB (gzipped) qrcode library out of everyone else's
+    // initial bundle.
+    import('qrcode')
+      .then(({ default: QRCode }) => QRCode.toDataURL(shareUrl, {
+        width: 180,
+        margin: 1,
+        color: { dark: '#4a1620', light: '#fffdfb' }
+      }))
+      .then((dataUrl) => { if (!cancelled) setQrDataUrl(dataUrl); })
       .catch((err) => console.error('QR code generation failed:', err));
+
+    return () => { cancelled = true; };
   }, [showQr, roomCode]);
 
   // Gleo Map States
