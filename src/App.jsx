@@ -5,7 +5,7 @@ import SwipeCard from './components/SwipeCard';
 import BracketView from './components/BracketView';
 import WinnerView from './components/WinnerView';
 import MatchSimulator from './components/MatchSimulator';
-import { Sparkles, Users, AlertTriangle } from 'lucide-react';
+import { Sparkles, Users, AlertTriangle, HelpCircle } from 'lucide-react';
 import logo from './assets/logo.png';
 
 function App() {
@@ -43,6 +43,7 @@ function App() {
   const [nicknameInput, setNicknameInput] = useState('');
   const [joinCodeInput, setJoinCodeInput] = useState('');
   const [activeTab, setActiveTab] = useState('create'); // 'create' or 'join'
+  const [showHowItWorks, setShowHowItWorks] = useState(false);
 
   // Prepopulate join code from URL if present
   useEffect(() => {
@@ -80,6 +81,46 @@ function App() {
               <span className="brand-word">Gin<span>der</span></span>
             </div>
             <p className="tagline">Swipe together. Match on a meal. No more "whatever, anything's fine".</p>
+
+            <button
+              type="button"
+              onClick={() => setShowHowItWorks((prev) => !prev)}
+              aria-expanded={showHowItWorks}
+              style={{
+                background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+                display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
+                color: 'var(--primary-soft)', fontWeight: 700, fontSize: '0.85rem',
+                marginBottom: '1.5rem', fontFamily: 'inherit'
+              }}
+            >
+              <HelpCircle size={16} />
+              {showHowItWorks ? 'Hide how it works' : 'How does this work?'}
+            </button>
+
+            {showHowItWorks && (
+              <div style={{
+                background: 'var(--support)', border: '2px solid rgba(74,22,32,0.1)',
+                borderRadius: 'var(--radius-md)', padding: '1.1rem 1.2rem',
+                marginBottom: '1.5rem', textAlign: 'left', fontSize: '0.82rem', color: 'var(--ink)'
+              }}>
+                <div style={{ display: 'flex', gap: '0.6rem', marginBottom: '0.8rem', alignItems: 'flex-start' }}>
+                  <span style={{ fontWeight: 800, color: 'var(--primary)', flexShrink: 0 }}>1.</span>
+                  <span>Everyone in the room swipes on restaurant cards — like or pass, 60 seconds.</span>
+                </div>
+                <div style={{ display: 'flex', gap: '0.6rem', marginBottom: '0.8rem', alignItems: 'flex-start' }}>
+                  <span style={{ fontWeight: 800, color: 'var(--primary)', flexShrink: 0 }}>2.</span>
+                  <span>Everyone liked exactly one place in common? That's the winner, instantly.</span>
+                </div>
+                <div style={{ display: 'flex', gap: '0.6rem', marginBottom: '0.8rem', alignItems: 'flex-start' }}>
+                  <span style={{ fontWeight: 800, color: 'var(--primary)', flexShrink: 0 }}>3.</span>
+                  <span>Multiple unanimous picks, or none at all? A bracket tournament settles it — 30 seconds a round, ties get a dramatic coin-flip animation.</span>
+                </div>
+                <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'flex-start' }}>
+                  <span style={{ fontWeight: 800, color: 'var(--primary)', flexShrink: 0 }}>4.</span>
+                  <span>Winner gets revealed with a link straight to Google Maps.</span>
+                </div>
+              </div>
+            )}
 
             {joinError && (
               <div style={{
