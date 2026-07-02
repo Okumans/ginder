@@ -176,7 +176,7 @@ export const BracketView = ({
         }}
         style={{ opacity: isDimmed ? 0.55 : 1, cursor: isTieBreakActiveForThisMatch ? 'default' : 'pointer' }}
       >
-        <img src={restaurant.image} onError={handleImageError} alt={restaurant.name} className="bracket-option-img" />
+        <img src={restaurant.image} onError={handleImageError} alt={restaurant.name} decoding="async" className="bracket-option-img" />
         <div className="bracket-option-info">
           <h3 style={{ fontSize: '1.1rem', color: 'var(--ink)', fontWeight: 800, marginBottom: '0.4rem' }}>
             {restaurant.name}

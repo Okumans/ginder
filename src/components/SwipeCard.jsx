@@ -74,6 +74,17 @@ export const SwipeCard = ({
     onSubmitVotes(completeVotes);
   };
 
+  // Warm the browser cache for the next 1-2 cards so advancing never shows
+  // a blank/loading flash mid-swipe.
+  useEffect(() => {
+    for (let offset = 1; offset <= 2; offset++) {
+      const upcoming = restaurants[currentIndex + offset];
+      if (!upcoming) continue;
+      const img = new Image();
+      img.src = upcoming.image;
+    }
+  }, [currentIndex, restaurants]);
+
   // Keyboard alternative to the drag gesture: Left = pass, Right = like
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -212,7 +223,7 @@ export const SwipeCard = ({
         >
           {overlayBadge}
           <div className="swipe-image-container">
-            <img src={cleanImageUrl(activeRestaurant.image)} crossOrigin="anonymous" onError={handleImageError} alt={activeRestaurant.name} className="swipe-img" draggable="false" />
+            <img src={cleanImageUrl(activeRestaurant.image)} crossOrigin="anonymous" onError={handleImageError} alt={activeRestaurant.name} decoding="async" className="swipe-img" draggable="false" />
             <div className="swipe-overlay-gradient" />
           </div>
 

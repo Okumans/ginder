@@ -120,7 +120,7 @@ export const WinnerView = ({
         marginBottom: '2rem',
         textAlign: 'left'
       }}>
-        <img src={cleanImageUrl(winner.image)} crossOrigin="anonymous" onError={handleImageError} alt={winner.name} style={{ width: '100%', height: '220px', objectFit: 'cover' }} />
+        <img src={cleanImageUrl(winner.image)} crossOrigin="anonymous" onError={handleImageError} alt={winner.name} decoding="async" style={{ width: '100%', height: '220px', objectFit: 'cover' }} />
         <div style={{ padding: '1.5rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
             <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--ink)' }}>{winner.name}</h3>
@@ -144,7 +144,7 @@ export const WinnerView = ({
               <div className="menu-list">
                 {winner.featured_menus.map((menu, idx) => (
                   <div key={idx} className="menu-item-chip" style={{ flex: 1 }}>
-                    <img src={cleanImageUrl(menu.image)} crossOrigin="anonymous" onError={handleImageError} alt={menu.name} style={{ height: '45px' }} />
+                    <img src={cleanImageUrl(menu.image)} crossOrigin="anonymous" onError={handleImageError} alt={menu.name} loading="lazy" decoding="async" style={{ height: '45px' }} />
                     <div className="menu-item-name">{menu.name}</div>
                     <div className="menu-item-price">{menu.price}</div>
                   </div>

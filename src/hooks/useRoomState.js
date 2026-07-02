@@ -117,6 +117,21 @@ export const useRoomState = () => {
     tieBreak
   };
 
+  // Warn before an accidental tab close/refresh strands the rest of the
+  // group mid-game. Not shown on HOME (nothing to lose) or WINNER (session
+  // already concluded).
+  useEffect(() => {
+    const activeStatuses = ['LOBBY', 'SWIPING', 'WAITING', 'BRACKET'];
+    if (!roomCode || !activeStatuses.includes(status)) return;
+
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [roomCode, status]);
+
   // Persist state to sessionStorage on every change
   useEffect(() => {
     if (status !== 'HOME' && roomCode) {
