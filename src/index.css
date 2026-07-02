@@ -421,6 +421,10 @@ input[type="text"]::placeholder {
   transform: translateY(-1px);
 }
 
+.category-chip:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
 .category-chip.active {
   background: var(--primary);
   border-color: var(--ink);

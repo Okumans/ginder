@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Heart, X, Clock } from 'lucide-react';
+import { hapticSwipe } from '../utils/haptics';
 
 const SWIPE_DURATION_SECS = 60;
 const SWIPE_TINT_MAX_OPACITY = 0.5;
@@ -43,6 +44,7 @@ export const SwipeCard = ({
   const recordVote = (like) => {
     if (!activeRestaurant || swipeDirection) return; // ignore double-fires mid-animation
 
+    hapticSwipe(like);
     setSwipeDirection(like ? 'yes' : 'no');
     setSwipeOffset({ x: like ? 600 : -600, y: 0 });
 

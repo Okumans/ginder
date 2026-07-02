@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Award, Check, Users, Clock, Shuffle } from 'lucide-react';
 import { TIE_BREAK_DURATION_MS } from '../hooks/useRoomState';
+import { hapticTap } from '../utils/haptics';
 
 const ROUND_DURATION_SECS = 30;
 
@@ -126,6 +127,7 @@ export const BracketView = ({
 
   const handleVote = (restaurantId) => {
     if (userVote || isTieBreakActiveForThisMatch) return;
+    hapticTap();
     submitBracketVote(restaurantId);
   };
 

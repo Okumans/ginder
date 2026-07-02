@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Award, Compass, RefreshCw, Share2, Check } from 'lucide-react';
+import { hapticCelebrate } from '../utils/haptics';
 
 export const WinnerView = ({
   winner,
@@ -14,7 +15,7 @@ export const WinnerView = ({
     // Generate 50 confetti particles
     const particles = [];
     const colors = ['#8c2333', '#c75860', '#ffe4e3', '#2f9e5b', '#ffd166', '#4a1620'];
-    
+
     for (let i = 0; i < 60; i++) {
       particles.push({
         id: i,
@@ -26,6 +27,7 @@ export const WinnerView = ({
       });
     }
     setConfetti(particles);
+    hapticCelebrate();
   }, [winner]);
 
   const handleOpenMaps = () => {
