@@ -43,6 +43,7 @@ export async function POST(
     room.participants[pid].finishedSwiping = false;
   });
   room.swipes = {};
+  room.swipeStartedAt = Date.now();
   room.status = "swiping";
 
   saveRoom(room);

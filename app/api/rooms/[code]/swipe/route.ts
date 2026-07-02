@@ -22,6 +22,32 @@ export async function POST(
     return NextResponse.json({ error: "ทิศทางไม่ถูกต้อง" }, { status: 400 });
   }
 
+  // Timer enforcement: auto-like all remaining cards if time expired
+  const timerExpired =
+    room.swipeStartedAt && Date.now() - room.swipeStartedAt > 60_000;
+  if (timerExpired && !room.participants[participantId].finishedSwiping) {
+    if (!room.swipes[participantId]) {
+      room.swipes[participantId] = {};
+    }
+    const order = room.participantOrder[participantId] ?? [];
+    order.forEach((rid) => {
+      if (!room.swipes[participantId][rid]) {
+        room.swipes[participantId][rid] = "like";
+      }
+    });
+    room.participants[participantId].finishedSwiping = true;
+
+    const pids = Object.keys(room.participants);
+    const allFinished = pids.every(
+      (pid) => room.participants[pid].finishedSwiping
+    );
+    if (allFinished && room.status === "swiping") {
+      computeResult(room);
+    }
+    saveRoom(room);
+    return NextResponse.json({ room });
+  }
+
   if (!room.swipes[participantId]) {
     room.swipes[participantId] = {};
   }
@@ -40,7 +66,11 @@ export async function POST(
   );
 
   if (allFinished && room.status === "swiping") {
-    computeResult(room);
+    try {
+      computeResult(room);
+    } catch (e) {
+      console.error("swipe computeResult error:", e);
+    }
   }
 
   saveRoom(room);

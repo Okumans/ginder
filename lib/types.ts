@@ -24,12 +24,16 @@ export interface BracketMatch {
   restaurantBId: string | null;
   votes: Record<string, string>;
   winnerId?: string;
+  tied?: boolean;
+  tieCandidates?: string[];
+  startedAt?: number;
 }
 
 export interface Bracket {
   round: number;
   matches: BracketMatch[];
   history: BracketMatch[][];
+  activeMatchIndex: number;
 }
 
 export interface Room {
@@ -43,4 +47,5 @@ export interface Room {
   bracket?: Bracket;
   winnerId?: string;
   createdAt: number;
+  swipeStartedAt?: number;
 }

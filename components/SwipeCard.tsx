@@ -15,6 +15,7 @@ export default function SwipeCard({ restaurant, onSwipe, isTop }: SwipeCardProps
   const rotate = useTransform(x, [-300, 300], [-25, 25]);
   const likeOpacity = useTransform(x, [60, 150], [0, 1]);
   const nopeOpacity = useTransform(x, [-150, -60], [1, 0]);
+
   const cardRef = useRef<HTMLDivElement>(null);
 
   const handleDragEnd = (
@@ -77,7 +78,23 @@ export default function SwipeCard({ restaurant, onSwipe, isTop }: SwipeCardProps
           className="h-full w-full object-cover"
           draggable={false}
         />
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4">
+        <motion.div
+          style={{
+            backgroundColor: useTransform(
+              x,
+              [-200, -80, 0, 80, 200],
+              [
+                "rgba(239, 68, 68, 0.55)",
+                "rgba(239, 68, 68, 0.08)",
+                "rgba(0, 0, 0, 0)",
+                "rgba(34, 197, 94, 0.08)",
+                "rgba(34, 197, 94, 0.55)",
+              ]
+            ),
+          }}
+          className="pointer-events-none absolute inset-0 z-10 transition-colors"
+        />
+        <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black/50 to-transparent p-4">
           <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-[var(--color-text)]">
             {restaurant.cuisine}
           </span>
