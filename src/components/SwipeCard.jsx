@@ -231,23 +231,17 @@ export const SwipeCard = ({
             </div>
 
             {activeRestaurant.featured_menus.length > 0 ? (
-              <div className="featured-menu-section" style={{ width: '100%' }}>
-                <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--primary-soft)', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Featured Menu
+              <div className="featured-menu-teaser">
+                <span className="featured-menu-teaser-label">Try:</span>
+                <span className="featured-menu-teaser-text">
+                  {activeRestaurant.featured_menus.map((m) => m.name).join(' · ')}
                 </span>
-                <div className="menu-list">
-                  {activeRestaurant.featured_menus.map((menu, idx) => (
-                    <div key={idx} className="menu-item-chip">
-                      <img src={cleanImageUrl(menu.image)} crossOrigin="anonymous" onError={handleImageError} alt={menu.name} draggable="false" />
-                      <div className="menu-item-name">{menu.name}</div>
-                      <div className="menu-item-price">{menu.price}</div>
-                    </div>
-                  ))}
-                </div>
               </div>
             ) : activeRestaurant.source === 'osm' && (
-              <div className="featured-menu-section" style={{ width: '100%', fontSize: '0.75rem', color: 'var(--ink)', opacity: 0.55, fontStyle: 'italic' }}>
-                Menu details aren't available from OpenStreetMap for this spot.
+              <div className="featured-menu-teaser">
+                <span className="featured-menu-teaser-text" style={{ fontStyle: 'italic' }}>
+                  Menu details aren't available from OpenStreetMap for this spot.
+                </span>
               </div>
             )}
           </div>

@@ -503,19 +503,15 @@ input[type="text"]::placeholder {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 0.9rem;
+  gap: 0.7rem;
   text-align: left;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--support-dark) transparent;
-}
-
-.swipe-info::-webkit-scrollbar {
-  width: 4px;
-}
-
-.swipe-info::-webkit-scrollbar-track {
-  background: transparent;
+  /* Content is sized to always fit here (no scrolling) — a scrollable
+     region on the same surface as the drag gesture makes swiping feel
+     "stuck" on touch devices, since the browser tries to scroll instead
+     of tracking the drag. touch-action: none keeps this whole card one
+     single drag surface. */
+  overflow: hidden;
+  touch-action: none;
 }
 
 .swipe-info::-webkit-scrollbar-thumb {
@@ -554,6 +550,12 @@ input[type="text"]::placeholder {
   opacity: 0.7;
   margin-bottom: 0.3rem;
   line-height: 1.4;
+  /* Clamp instead of scroll: a swipe card's text always has to fit in view,
+     never require scrolling to read. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .swipe-tags {
@@ -576,6 +578,37 @@ input[type="text"]::placeholder {
 .featured-menu-section {
   border-top: 2px dashed var(--support-dark);
   padding-top: 0.8rem;
+}
+
+/* One-line teaser used on the swipe card itself — the full photo grid
+   moved to the winner reveal, since a swipe card must never need
+   scrolling to read (see .swipe-info touch-action note). */
+.featured-menu-teaser {
+  border-top: 2px dashed var(--support-dark);
+  padding-top: 0.6rem;
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.featured-menu-teaser-label {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--primary-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.featured-menu-teaser-text {
+  font-size: 0.8rem;
+  color: var(--ink);
+  opacity: 0.75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .menu-list {
