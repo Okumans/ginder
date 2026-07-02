@@ -1,6 +1,6 @@
-# Actor List: AraiKeeDai (อะไรก็ได้)
+# Actor List: Ginder (อะไรก็ได้)
 
-This document describes the user roles and actors participating in the AraiKeeDai application.
+This document describes the user roles and actors participating in the Ginder application.
 
 ---
 

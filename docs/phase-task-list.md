@@ -1,6 +1,6 @@
-# Phase Task List: AraiKeeDai (อะไรก็ได้)
+# Phase Task List: Ginder (อะไรก็ได้)
 
-This document lists the specific tasks required to implement the AraiKeeDai prototype, sorted by phase and priority.
+This document lists the specific tasks required to implement the Ginder prototype, sorted by phase and priority.
 
 ---
 

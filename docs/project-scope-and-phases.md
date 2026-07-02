@@ -1,6 +1,6 @@
-# Project Scope and Phase Plan: AraiKeeDai (อะไรก็ได้)
+# Project Scope and Phase Plan: Ginder (อะไรก็ได้)
 
-This document maps out the phases, scope, milestones, and risk assessment for building the AraiKeeDai prototype.
+This document maps out the phases, scope, milestones, and risk assessment for building the Ginder prototype.
 
 ---
 

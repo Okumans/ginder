@@ -1,6 +1,6 @@
-# Use Cases: AraiKeeDai (อะไรก็ได้)
+# Use Cases: Ginder (อะไรก็ได้)
 
-This document outlines the detailed use cases for the AraiKeeDai prototype.
+This document outlines the detailed use cases for the Ginder prototype.
 
 ---
 
@@ -10,7 +10,7 @@ This document outlines the detailed use cases for the AraiKeeDai prototype.
 **Description:** The host creates a new session, configures the settings, and generates a room code.  
 
 ### Preconditions:
-- The Host is on the AraiKeeDai web application home page.
+- The Host is on the Ginder web application home page.
 
 ### Postconditions:
 - A new room is registered, and the Host is placed in the lobby.

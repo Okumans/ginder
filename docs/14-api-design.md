@@ -1,6 +1,6 @@
-# API Design (BroadcastChannel Events): AraiKeeDai (อะไรก็ได้)
+# API Design (BroadcastChannel Events): Ginder (อะไรก็ได้)
 
-Since the AraiKeeDai prototype utilizes the browser's `BroadcastChannel` API to sync rooms locally in real-time, this document defines the event schema.
+Since the Ginder prototype utilizes the browser's `BroadcastChannel` API to sync rooms locally in real-time, this document defines the event schema.
 
 ---
 

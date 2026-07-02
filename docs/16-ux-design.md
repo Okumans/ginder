@@ -1,6 +1,6 @@
-# UX Design: AraiKeeDai (อะไรก็ได้)
+# UX Design: Ginder (อะไรก็ได้)
 
-This document describes the page flows, wireframes, and design system choices for the AraiKeeDai UI.
+This document describes the page flows, wireframes, and design system choices for the Ginder UI.
 
 ---
 
@@ -22,7 +22,7 @@ This document describes the page flows, wireframes, and design system choices fo
 ## 2. Screen & Page Flow
 
 ### 2.1. Home Screen (SCR-HOME)
-- **Header:** App Logo `AraiKeeDai` with glowing text.
+- **Header:** App Logo `Ginder` with glowing text.
 - **Action Cards:**
   - **Create Room Card:** Input host nickname -> "Create Room" button (Electric Purple).
   - **Join Room Card:** Input participant nickname and 4-letter Room Code -> "Join Room" button (Neon Cyan).

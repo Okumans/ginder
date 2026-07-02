@@ -1,4 +1,4 @@
-# User Stories: AraiKeeDai (อะไรก็ได้)
+# User Stories: Ginder (อะไรก็ได้)
 
 This document contains user stories detailing user actions, benefits, and acceptance criteria.
 

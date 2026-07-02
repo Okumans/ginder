@@ -1,6 +1,6 @@
-# Test Plan: AraiKeeDai (อะไรก็ได้)
+# Test Plan: Ginder (อะไรก็ได้)
 
-This document outlines the testing strategy, test scenarios, and acceptance criteria for validating the AraiKeeDai prototype.
+This document outlines the testing strategy, test scenarios, and acceptance criteria for validating the Ginder prototype.
 
 ---
 

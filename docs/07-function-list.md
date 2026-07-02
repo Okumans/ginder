@@ -1,4 +1,4 @@
-# Function List: AraiKeeDai (อะไรก็ได้)
+# Function List: Ginder (อะไรก็ได้)
 
 This document contains a structured inventory of the application functions.
 

@@ -1,4 +1,4 @@
-# Project Specification Description: AraiKeeDai (อะไรก็ได้)
+# Project Specification Description: Ginder (อะไรก็ได้)
 
 **Tagline:** No more "Whatever" when choosing where to eat!
 
@@ -7,14 +7,14 @@
 ## 1. Project Overview
 
 ### Project Name and Tagline
-- **Name:** AraiKeeDai (อะไรก็ได้)
+- **Name:** Ginder (อะไรก็ได้)
 - **Tagline:** No more "Whatever" when choosing where to eat!
 
 ### Problem Statement
 When groups of friends decide to go out for a meal or hang out, they often run into a common roadblock: the indecisiveness of the participants. When asked what they want to eat, many friends respond with "Arai Kee Dai" (Thai for "Anything" or "Whatever"). This leads to wasted time, frustration, and social friction.
 
 ### Solution Summary
-AraiKeeDai is a web-based prototype designed to make group restaurant selection fun, interactive, and quick. By utilizing a Tinder-like swiping mechanic for restaurant cards and a bracket-style tournament system for ties or top choices, AraiKeeDai helps groups reach a consensus in minutes.
+Ginder is a web-based prototype designed to make group restaurant selection fun, interactive, and quick. By utilizing a Tinder-like swiping mechanic for restaurant cards and a bracket-style tournament system for ties or top choices, Ginder helps groups reach a consensus in minutes.
 
 ---
 

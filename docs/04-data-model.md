@@ -1,4 +1,4 @@
-# Data Model: AraiKeeDai (อะไรก็ได้)
+# Data Model: Ginder (อะไรก็ได้)
 
 This document describes the logical data model, entity relationships, and constraints.
 

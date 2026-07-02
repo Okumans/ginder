@@ -1,6 +1,6 @@
-# Architecture Summary: AraiKeeDai (อะไรก็ได้)
+# Architecture Summary: Ginder (อะไรก็ได้)
 
-This document describes the technical architecture, project directory layout, and communication channels for the AraiKeeDai prototype.
+This document describes the technical architecture, project directory layout, and communication channels for the Ginder prototype.
 
 ---
 
