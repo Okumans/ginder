@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #8C2333;
+  --color-secondary: #C75860;
+  --color-bg: #FFE4E3;
+  --color-text: #3A1218;
+  --font-main: "Comic Neue", "Comic Sans MS", cursive, sans-serif;
+}
+
+@theme inline {
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-bg: var(--color-bg);
+  --color-text: var(--color-text);
+  --font-main: var(--font-main);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  min-height: 100vh;
+}
