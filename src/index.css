@@ -211,9 +211,12 @@ body::after {
 }
 
 /* Respect reduced-motion preferences: keep functional feedback (spinners,
-   drag response) but drop decorative looping/entrance animation. */
+   drag response) but drop decorative looping/entrance animation. Excludes
+   .swipe-card, since collapsing its fly-away/reset transition to ~0 doesn't
+   read as "less flashy" -- it reads as the app freezing mid-swipe, since
+   that motion *is* the confirmation a like/pass registered. */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *:not(.swipe-card), *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
@@ -222,6 +225,10 @@ body::after {
 
   body::before, body::after {
     animation: none !important;
+  }
+
+  .swipe-card {
+    transition-duration: 0.25s !important;
   }
 }
 
