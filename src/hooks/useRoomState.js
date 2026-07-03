@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { restaurants as masterRestaurants } from '../data/restaurants';
 import { fetchNearbyRestaurants } from '../services/overpassApi';
+import { showToast } from '../utils/toast';
 
 // Helper to generate UUID
 const generateUUID = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -547,12 +548,12 @@ export const useRoomState = () => {
     const filtered = getCuratedMatches();
 
     if (filtered.length === 0) {
-      alert("No restaurants match your selected categories and distance range! Please adjust your settings before starting.");
+      showToast('No restaurants match your selected categories and distance range! Please adjust your settings before starting.', 'error');
       return;
     }
 
     if (filtered.length < settings.cardLimit) {
-      alert(`Only ${filtered.length} matching restaurants found for your current criteria. Swiping will proceed with ${filtered.length} cards.`);
+      showToast(`Only ${filtered.length} matching restaurants found. Swiping will proceed with ${filtered.length} cards.`, 'warning');
     }
 
     beginSwipingWith(filtered.slice(0, settings.cardLimit));

@@ -7,6 +7,7 @@ import WinnerView from './components/WinnerView';
 import MatchSimulator from './components/MatchSimulator';
 import { Sparkles, Users, AlertTriangle, HelpCircle } from 'lucide-react';
 import logo from './assets/logo.png';
+import { showToast } from './utils/toast';
 
 function App() {
   const {
@@ -57,15 +58,15 @@ function App() {
 
   const handleCreateSubmit = (e) => {
     e.preventDefault();
-    if (!nicknameInput.trim()) return alert('Please enter your nickname');
+    if (!nicknameInput.trim()) return showToast('Please enter your nickname', 'warning');
     createRoom(nicknameInput.trim());
   };
 
   const handleJoinSubmit = (e) => {
     e.preventDefault();
-    if (!nicknameInput.trim()) return alert('Please enter your nickname');
+    if (!nicknameInput.trim()) return showToast('Please enter your nickname', 'warning');
     if (!joinCodeInput.trim() || joinCodeInput.trim().length !== 4) {
-      return alert('Please enter a valid 4-character Room Code');
+      return showToast('Please enter a valid 4-character Room Code', 'warning');
     }
     joinRoom(nicknameInput.trim(), joinCodeInput.trim());
   };

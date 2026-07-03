@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Copy, Users, Play, Bot, AlertCircle, MapPin, Eye, EyeOff, Timer, Globe, Sparkles, Loader2, QrCode } from 'lucide-react';
 import { restaurants } from '../data/restaurants';
+import { showToast } from '../utils/toast';
 
 export const LobbyView = ({
   roomCode,
@@ -326,8 +327,11 @@ export const LobbyView = ({
     try {
       const successful = document.execCommand('copy');
       if (successful) {
-        alert('Room link copied to clipboard!');
+        showToast('Room link copied to clipboard!', 'success');
       } else {
+        // Genuinely needs to stay a blocking native dialog here (not a
+        // toast) so the user has time to select and manually copy the URL
+        // themselves before it would auto-dismiss.
         alert('Failed to copy. Please copy manually: ' + text);
       }
     } catch (err) {
@@ -341,7 +345,7 @@ export const LobbyView = ({
     const shareUrl = `${window.location.origin}?room=${roomCode}`;
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(shareUrl)
-        .then(() => alert('Room link copied to clipboard!'))
+        .then(() => showToast('Room link copied to clipboard!', 'success'))
         .catch(() => fallbackCopy(shareUrl));
     } else {
       fallbackCopy(shareUrl);

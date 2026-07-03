@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
+import ToastContainer from './components/ToastContainer.jsx'
 
 // The Gleo map library (loaded from a CDN, see index.html) throws this
 // specific error from inside its own ResizeObserver callback when the map
@@ -20,6 +21,7 @@ window.addEventListener('error', (event) => {
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ErrorBoundary>
+      <ToastContainer />
       <App />
     </ErrorBoundary>
   </StrictMode>,

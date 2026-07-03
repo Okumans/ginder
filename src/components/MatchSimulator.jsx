@@ -1,5 +1,6 @@
 import React from 'react';
 import { Bot, Smartphone } from 'lucide-react';
+import { showToast } from '../utils/toast';
 
 export const MatchSimulator = ({
   status,
@@ -99,13 +100,13 @@ export const MatchSimulator = ({
           }}
           onClick={() => {
             navigator.clipboard.writeText(shareUrl);
-            alert('Copied URL!');
+            showToast('Copied URL!', 'success');
           }}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
               navigator.clipboard.writeText(shareUrl);
-              alert('Copied URL!');
+              showToast('Copied URL!', 'success');
             }
           }}
         >
