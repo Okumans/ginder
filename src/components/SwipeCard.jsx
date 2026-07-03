@@ -22,7 +22,21 @@ export const SwipeCard = ({
   const dragStart = useRef({ x: 0, y: 0 });
   const cardRef = useRef(null);
 
+  // Mirrors the live drag state in a ref (not just React state) so the
+  // watchdog timer below can always act on fresh values instead of a
+  // stale closure from whichever render scheduled it.
+  const dragStateRef = useRef({ isDragging: false, offset: { x: 0, y: 0 }, pointerId: null, target: null });
+  const watchdogRef = useRef(null);
+  const isCommittingVoteRef = useRef(false);
+
   const activeRestaurant = restaurants[currentIndex];
+
+  // Don't let a pending watchdog timer fire after the component's gone
+  useEffect(() => {
+    return () => {
+      if (watchdogRef.current) clearTimeout(watchdogRef.current);
+    };
+  }, []);
 
   // Fixed 60-second countdown for the whole swipe round
   useEffect(() => {
@@ -42,7 +56,14 @@ export const SwipeCard = ({
   }, [votes]);
 
   const recordVote = (like) => {
-    if (!activeRestaurant || swipeDirection) return; // ignore double-fires mid-animation
+    // Guards against double-firing with a dedicated ref (not swipeDirection
+    // state) -- swipeDirection is *also* set continuously during ordinary
+    // dragging as the live "YUM/PASS" preview badge, well before a vote is
+    // actually committed. Checking it here used to mean a legitimate
+    // release could see swipeDirection already truthy from the drag
+    // preview and silently no-op, permanently freezing the card mid-swipe.
+    if (!activeRestaurant || isCommittingVoteRef.current) return;
+    isCommittingVoteRef.current = true;
 
     hapticSwipe(like);
     setSwipeDirection(like ? 'yes' : 'no');
@@ -54,6 +75,7 @@ export const SwipeCard = ({
     setTimeout(() => {
       setSwipeOffset({ x: 0, y: 0 });
       setSwipeDirection(null);
+      isCommittingVoteRef.current = false;
 
       const nextIndex = currentIndex + 1;
       if (nextIndex >= restaurants.length) {
@@ -97,8 +119,53 @@ export const SwipeCard = ({
   }, [activeRestaurant, swipeDirection, votes]);
 
   // Touch/Mouse swipe handlers
+  const clearWatchdog = () => {
+    if (watchdogRef.current) {
+      clearTimeout(watchdogRef.current);
+      watchdogRef.current = null;
+    }
+  };
+
+  // iOS Safari has known cases where pointerup/pointercancel silently fail
+  // to fire after a gesture gets interrupted mid-drag (e.g. the system
+  // edge-swipe gesture, the tab getting backgrounded), which would
+  // otherwise leave the card permanently frozen mid-swipe with no way to
+  // recover. Re-armed on every pointermove, so an actively-dragging user
+  // is never interrupted -- only a truly abandoned drag gets force-resolved.
+  const armWatchdog = () => {
+    clearWatchdog();
+    watchdogRef.current = setTimeout(() => resolveDrag(), 2000);
+  };
+
+  const resolveDrag = () => {
+    clearWatchdog();
+    if (!dragStateRef.current.isDragging) return;
+    dragStateRef.current.isDragging = false;
+    setIsDragging(false);
+
+    const { target, pointerId, offset } = dragStateRef.current;
+    if (target && pointerId != null) {
+      try { target.releasePointerCapture(pointerId); } catch (err) {}
+    }
+
+    if (cardRef.current) {
+      cardRef.current.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, background-color 0.15s ease';
+    }
+
+    const threshold = 120;
+    if (offset.x > threshold) {
+      recordVote(true);
+    } else if (offset.x < -threshold) {
+      recordVote(false);
+    } else {
+      setSwipeOffset({ x: 0, y: 0 });
+      setSwipeDirection(null);
+    }
+  };
+
   const handlePointerDown = (e) => {
     setIsDragging(true);
+    dragStateRef.current = { isDragging: true, offset: { x: 0, y: 0 }, pointerId: e.pointerId, target: e.target };
     dragStart.current = { x: e.clientX, y: e.clientY };
     if (cardRef.current) {
       cardRef.current.style.transition = 'none';
@@ -108,12 +175,14 @@ export const SwipeCard = ({
     } catch (err) {
       console.warn("setPointerCapture failed:", err);
     }
+    armWatchdog();
   };
 
   const handlePointerMove = (e) => {
-    if (!isDragging) return;
+    if (!dragStateRef.current.isDragging) return;
     const diffX = e.clientX - dragStart.current.x;
     const diffY = e.clientY - dragStart.current.y;
+    dragStateRef.current.offset = { x: diffX, y: diffY };
     setSwipeOffset({ x: diffX, y: diffY });
 
     if (diffX > 100) {
@@ -123,29 +192,11 @@ export const SwipeCard = ({
     } else {
       setSwipeDirection(null);
     }
+    armWatchdog();
   };
 
-  const handlePointerUp = (e) => {
-    if (!isDragging) return;
-    setIsDragging(false);
-
-    try {
-      e.target.releasePointerCapture(e.pointerId);
-    } catch (err) {}
-
-    if (cardRef.current) {
-      cardRef.current.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, background-color 0.15s ease';
-    }
-
-    const threshold = 120;
-    if (swipeOffset.x > threshold) {
-      recordVote(true);
-    } else if (swipeOffset.x < -threshold) {
-      recordVote(false);
-    } else {
-      setSwipeOffset({ x: 0, y: 0 });
-      setSwipeDirection(null);
-    }
+  const handlePointerUp = () => {
+    resolveDrag();
   };
 
   const handleImageError = (e) => {
@@ -220,6 +271,7 @@ export const SwipeCard = ({
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
+          onLostPointerCapture={handlePointerUp}
         >
           {overlayBadge}
           <div className="swipe-image-container">
