@@ -110,6 +110,14 @@
 .toast-info { border-color: var(--primary-soft); color: var(--primary); }
 .toast-info span { color: var(--ink); }
 
+html {
+  /* Mobile Safari sometimes only fully respects horizontal overflow
+     clipping when it's set on both html and body -- without it, a
+     transform-driven element (the swipe card flying off to the side) can
+     visibly grow the page's scrollable width instead of being clipped. */
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   display: flex;
