@@ -581,10 +581,16 @@ export const useRoomState = () => {
       beginSwipingWith(liveResults.slice(0, settings.cardLimit));
     } catch (err) {
       setLiveDataError(`${err.message} Falling back to curated picks.`);
-      startSwipingWithCuratedData();
-    } finally {
       setIsFetchingLive(false);
+      // Give the Lobby a moment to actually paint the error banner before
+      // moving on — falling back instantly (same tick as the SWIPING status
+      // change) meant React batched both updates and the Lobby unmounted
+      // before anyone could see why it fell back.
+      await new Promise((resolve) => setTimeout(resolve, 2200));
+      startSwipingWithCuratedData();
+      return;
     }
+    setIsFetchingLive(false);
   };
 
   // Submit Swipe Votes
